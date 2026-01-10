@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ACCESS</title>
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #06070a;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    .wrap {
+      width: min(720px, 92vw);
+      padding: 28px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .line { opacity: 0.9; margin: 0 0 10px 0; }
+    .muted { opacity: 0.6; }
+    .grid { display: grid; gap: 12px; margin-top: 18px; }
+    input, button {
+      font: inherit;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.35);
+      color: rgba(255,255,255,0.92);
+      outline: none;
+    }
+    button { cursor: pointer; }
+    button:hover { border-color: rgba(255,255,255,0.30); }
+    .out {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.25);
+      white-space: pre-wrap;
+      line-height: 1.5;
+      display: none;
+    }
+    .err { color: #ffb4b4; }
+    .ok { color: rgba(255,255,255,0.92); }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <p class="line">Subject: Niklas</p>
+    <p class="line">Status: verified</p>
+    <p class="line">Awareness level: low</p>
+    <p class="line">Next phase: <span class="muted">locked</span></p>
+
+    <form id="gate" class="grid" autocomplete="off">
+      <label class="muted" for="code">ENTER CODE</label>
+      <input id="code" name="code" inputmode="text" placeholder="Type code" />
+      <button type="submit">Submit</button>
+    </form>
+
+    <div id="out" class="out"></div>
+  </main>
+
+  <script>
+    const TIMEZONE = "Europe/Zurich";
+
+    // Change this to your chosen code
+    const ACCESS_CODE = "galacticos";
+
+    // Date windows in Zurich time, use YYYY-MM-DD
+    const PHASE_1_END = "2026-02-03"; // inclusive
+    const PHASE_2_START = "2026-02-04";
+    const PHASE_2_END = "2026-02-10"; // inclusive
+    const PHASE_3_START = "2026-02-11";
+
+    function zurichDateString() {
+      const fmt = new Intl.DateTimeFormat("en-CA", {
+        timeZone: TIMEZONE,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+      return fmt.format(new Date()); // returns YYYY-MM-DD in en-CA
+    }
+
+    function pickMessage(today) {
+      if (today <= PHASE_1_END) {
+        return [
+          "Access granted.",
+          "",
+          "Good. You can follow instructions.",
+          "This was a test.",
+          "No further information at this time.",
+        ].join("\n");
+      }
+
+      if (today >= PHASE_2_START && today <= PHASE_2_END) {
+        return [
+          "Access granted.",
+          "",
+          "Charter mode: activated.",
+          "All inclusive.",
+          "All control: surrendered.",
+        ].join("\n");
+      }
+
+      if (today >= PHASE_3_START) {
+        return [
+          "Access granted.",
+          "",
+          "Coordinates unlocked.",
+          "Next phase: imminent.",
+          "",
+          "Check your surroundings.",
+        ].join("\n");
+      }
+
+      // Fallback, should not really happen with the ranges above
+      return "Access granted.\n\nStand by.";
+    }
+
+    const form = document.getElementById("gate");
+    const out = document.getElementById("out");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const entered = (document.getElementById("code").value || "").trim().toLowerCase();
+
+      out.style.display = "block";
+
+      if (entered !== ACCESS_CODE.toLowerCase()) {
+        out.className = "out err";
+        out.textContent = "Access denied.\n\nTry again.";
+        return;
+      }
+
+      const today = zurichDateString();
+      out.className = "out ok";
+      out.textContent = pickMessage(today);
+    });
+  </script>
+</body>
+</html>
