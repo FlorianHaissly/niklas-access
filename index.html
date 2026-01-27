@@ -73,10 +73,12 @@
     const ACCESS_CODE = "galacticos";
 
     // Date windows in Zurich time, use YYYY-MM-DD
-    const PHASE_1_END = "2026-02-03"; // inclusive
-    const PHASE_2_START = "2026-02-04";
-    const PHASE_2_END = "2026-02-10"; // inclusive
-    const PHASE_3_START = "2026-02-11";
+    const PHASE_1_END = "2026-01-27"; // inclusive
+    const PHASE_2_START = "2026-01-28";
+    const PHASE_2_END = "2026-02-03"; // inclusive
+    const PHASE_3_START = "2026-02-04";
+    const PHASE_3_END = "2026-02-10"; // inclusive
+    const PHASE_4_START = "2026-02-11";
 
     function zurichDateString() {
       const fmt = new Intl.DateTimeFormat("en-CA", {
@@ -107,23 +109,42 @@
         return [
           "Access granted.",
           "",
-          "Charter mode: activated.",
-          "All inclusive.",
-          "All control: surrendered.",
+          "Awareness level: Scanning.",
+          "",
+          "Acquiring information.",
+          "1 0 4 0",
+          "",
+      "Next login window:",
+          "04.02.26",
         ].join("\n");
       }
 
-      if (today >= PHASE_3_START) {
+      if (today >= PHASE_3_START && today <= PHASE_3_END) {
         return [
-          "Access granted.",
+              "Access granted.",
           "",
-          "Coordinates unlocked.",
-          "Next phase: imminent.",
+          "Awareness level: Monitoring.",
           "",
-          "Check your surroundings.",
+          "Acquiring information.",
+          "2 6 0 0",
+          "",
+      "Next login window:",
+          "11.02.26",
         ].join("\n");
       }
 
+      if (today >= PHASE_4_START) {
+        return [
+             "Access granted.",
+          "",
+          "Awareness level: Syncronizing.",
+          "",
+          "Acquiring information.",
+        "~ 1 2 0 0",
+          "",
+          "Connection breaking.",
+        ].join("\n");
+      }
       // Fallback, should not really happen with the ranges above
       return "Access granted.\n\nStand by.";
     }
