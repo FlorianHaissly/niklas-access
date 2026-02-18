@@ -55,7 +55,7 @@
   <main class="wrap">
     <p class="line">Subject: Niklas</p>
     <p class="line">Status: Verified</p>
-    <p class="line">Awareness level: Monitoring</p>
+    <p class="line">Awareness level: Synchronized</p>
 
     <form id="gate" class="grid" autocomplete="off">
       <label class="muted" for="code">ENTER CODE</label>
@@ -134,13 +134,7 @@
       if (today >= PHASE_4_START) {
         return [
              "Access granted.",
-          "",
-          "Awareness level: Syncronizing.",
-          "",
-          "Acquiring unit.",
-        "m",
-          "",
-          "Connection breaking.",
+          "Operation terminated."
         ].join("\n");
       }
       // Fallback, should not really happen with the ranges above
